@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="it-IT">
+<head>
+<meta charset="utf-8">
+<title>Stampa libretto - booklet</title>
+<script>
+  /*
+  *  from https://help.gnome.org/users/evince/stable/singlesided-npage.html.en
+  *
+  *  Type the numbers of the pages in this order:
+  *      n, 1, 2, n-1, n-2, 3, 4, n-3, n-4, 5, 6, n-5, n-6, 7, 8, n-7, n-8, 9, 10, n-9, n-10, 11, 12, n-11...
+  *      ...until you have typed n-number of pages.
+  */
+  
+  //la variabile tot contiene il numero di pagine totali (deve essere un multiplo di 4)
+  function genera()
+  {
+    document.getElementById("ordine").innerHTML = "";
+    var tot = parseInt(document.getElementById("tot").value);
+    
+    //DEBUG document.getElementById("debug").innerHTML = (tot % 4);
+    //DEBUG return;
+    
+    //tot deve essere multiplo di 4
+    if(0 != (tot % 4)) {
+	tot += (4 - parseInt(tot % 4));
+        //aggiorno anche il valore nell'input box del documento
+        document.getElementById("tot").value = tot;
+    }
+    
+    for(i = 0; i < tot/4; i++) {
+      var p1 = tot - i*2, p2 = 1 + i*2, p3 = 2 + i*2, p4 = tot - 1 - i*2;
+      document.getElementById("ordine").innerHTML += p1 + ", " + p2 + ", " + p3 + ", " + p4;
+      if(i + 1 < tot/4){
+        document.getElementById("ordine").innerHTML += ", ";
+      }
+    }
+  }
+
+</script>
+</head>
+<body>
+  <input type="number" id="tot" value="20">
+  <button onclick="genera()">Genera sequenza</button> 
+  <p id='debug'></p>
+  <p id='ordine'></p>
+</body>
+</html>
