@@ -15,8 +15,12 @@
   //la variabile tot contiene il numero di pagine totali (deve essere un multiplo di 4)
   function genera()
   {
+    //azzero i campi
     document.getElementById("ordine").innerHTML = "";
+    document.getElementById("fronte").innerHTML = "";
+    document.getElementById("retro").innerHTML = "";
     var tot = parseInt(document.getElementById("tot").value);
+    var start_page = parseInt(document.getElementById("start_page").value);
     
     //DEBUG document.getElementById("debug").innerHTML = (tot % 4);
     //DEBUG return;
@@ -30,19 +34,42 @@
     
     for(i = 0; i < tot/4; i++) {
       var p1 = tot - i*2, p2 = 1 + i*2, p3 = 2 + i*2, p4 = tot - 1 - i*2;
-      document.getElementById("ordine").innerHTML += p1 + ", " + p2 + ", " + p3 + ", " + p4;
+
+      //TUTTE
+      document.getElementById("ordine").innerHTML += (p1+start_page-1) + ", " + (p2+start_page-1) + ", " + (p3+start_page-1) + ", " + (p4+start_page-1);
       if(i + 1 < tot/4){
         document.getElementById("ordine").innerHTML += ", ";
       }
+      
+      //SOLO fronte
+      document.getElementById("fronte").innerHTML += (p1+start_page-1) + ", " + (p2+start_page-1);
+      if(i + 1 < tot/4){
+        document.getElementById("fronte").innerHTML += ", ";
+      }
+     
+      //SOLO retro
+      document.getElementById("retro").innerHTML = (p3+start_page-1) + ", " + (p4+start_page-1) + ", " + document.getElementById("retro").innerHTML;     
     }
+
+    //da retro rimuovo la virgola in fondo
+    document.getElementById("retro").innerHTML = document.getElementById("retro").innerHTML.slice(0, -2);
+    
   }
 
 </script>
 </head>
 <body>
-  <input type="number" id="tot" value="20">
+Inizio da pag.  <input type="number" id="start_page" value="1">
+Stampa complessivamente   <input type="number" id="tot" value="20"> pagine
   <button onclick="genera()">Genera sequenza</button> 
   <p id='debug'></p>
-  <p id='ordine'></p>
+  <p>Stampa tutte le pagine (rigirare i fogli singolarmente)</p>
+  <p id='ordine'></p><br><br><br>
+  
+  <p>Stampa solo le pagine fronte</p> 
+  <p id='fronte'></p>
+  
+  <p>Inserife il blocco di fogli (senza spostare o rigirare le pagine) in modo che la pagina e procedere con Stampa del retro</p>
+  <p id='retro'></p>
 </body>
 </html>
